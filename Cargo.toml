@@ -1,0 +1,9 @@
+[package]
+name = "tubes"
+version = "0.1.0"
+authors = ["Nic Ficca <nicficca@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+chrono = "0.4.6"
+serde_json = "1.0"
