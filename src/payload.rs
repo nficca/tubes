@@ -22,3 +22,24 @@ impl Clone for Payload {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn new() {
+        let payload = Payload::new(json!({"foo": "bar"}));
+
+        assert_eq!(payload.data, json!({"foo": "bar"}));
+    }
+
+    #[test]
+    fn clone() {
+        let payload = Payload::new(json!({"foo": "bar"}));
+        let clone = payload.clone();
+
+        assert_eq!(clone.data, payload.data);
+        assert_eq!(clone.timestamp, payload.timestamp);
+    }
+}
