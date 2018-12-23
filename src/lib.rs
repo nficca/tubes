@@ -1,6 +1,3 @@
-extern crate chrono;
-#[macro_use] extern crate serde_json;
-
 mod payload;
 
 use std::collections::HashMap;
@@ -8,9 +5,8 @@ use std::sync::mpsc;
 
 use self::payload::Payload;
 
-
-struct Tubes {
-    tubes: HashMap<String, Vec<mpsc::Sender<Payload>>>
+pub struct Tubes {
+    tubes: HashMap<String, Vec<mpsc::Sender<Payload>>>,
 }
 
 impl Tubes {
@@ -28,7 +24,7 @@ impl Tubes {
         Self { tubes }
     }
 
-    pub fn send<T: Into<String>>(&self, name: T, payload: Payload) {
+    pub fn send<T: Into<String>>(&self, name: T, payload: &Payload) {
         if let Some(senders) = self.tubes.get(&name.into()) {
             for sender in senders {
                 sender.send(payload.clone()).expect("Failed to send")
