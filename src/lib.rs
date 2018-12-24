@@ -5,6 +5,7 @@ use std::sync::mpsc;
 
 pub use self::payload::Payload;
 
+#[derive(Default)]
 pub struct Tubes {
     tubes: HashMap<String, Vec<mpsc::Sender<Payload>>>,
 }
