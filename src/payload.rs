@@ -1,14 +1,13 @@
 use chrono::prelude::*;
-use serde_json;
 
 #[derive(PartialEq, Debug)]
-pub struct Payload {
+pub struct Payload<T: Clone> {
     timestamp: DateTime<Utc>,
-    data: serde_json::Value,
+    data: T,
 }
 
-impl Payload {
-    pub fn new(data: serde_json::Value) -> Payload {
+impl<T: Clone> Payload<T> {
+    pub fn new(data: T) -> Payload<T> {
         Payload {
             timestamp: Utc::now(),
             data,
@@ -16,8 +15,8 @@ impl Payload {
     }
 }
 
-impl Clone for Payload {
-    fn clone(&self) -> Payload {
+impl<T: Clone> Clone for Payload<T> {
+    fn clone(&self) -> Payload<T> {
         Payload {
             timestamp: self.timestamp,
             data: self.data.clone(),
@@ -31,14 +30,14 @@ mod tests {
 
     #[test]
     fn new() {
-        let payload = Payload::new(serde_json::json!({"foo": "bar"}));
+        let payload = Payload::new(1);
 
-        assert_eq!(payload.data, serde_json::json!({"foo": "bar"}));
+        assert_eq!(payload.data, 1);
     }
 
     #[test]
     fn clone() {
-        let payload = Payload::new(serde_json::json!({"foo": "bar"}));
+        let payload = Payload::new(5);
         let clone = payload.clone();
 
         assert_eq!(clone.data, payload.data);
@@ -47,9 +46,9 @@ mod tests {
 
     #[test]
     fn eq() {
-        let a = Payload::new(serde_json::json!({"foo": "bar"}));
+        let a = Payload::new(1);
         let b = a.clone();
-        let c = Payload::new(serde_json::json!({"fizz": "buzz"}));
+        let c = Payload::new(3);
 
         assert_eq!(a, b);
         assert_ne!(a, c);

@@ -1,6 +1,5 @@
 extern crate tubes;
 
-use serde_json::json;
 use std::thread;
 use tubes::{Payload, Tubes};
 
@@ -12,10 +11,7 @@ fn it_works() {
     let foo_receiver2 = tubes.subscribe("foo").unwrap();
     let bar_receiver = tubes.subscribe("bar").unwrap();
 
-    let payload = Payload::new(json!({
-        "name": "John",
-        "number": 1234
-    }));
+    let payload = Payload::new("thing");
 
     tubes.send("foo", &payload);
 
@@ -30,8 +26,8 @@ fn it_maintains_payload_ordering() {
 
     let foo_receiver = tubes.subscribe("foo").unwrap();
 
-    let payload_a = Payload::new(json!({"fizz": "buzz"}));
-    let payload_b = Payload::new(json!({"fizz": "buzz"}));
+    let payload_a = Payload::new(1);
+    let payload_b = Payload::new(2);
 
     tubes.send("foo", &payload_b);
     tubes.send("foo", &payload_a);
@@ -44,7 +40,7 @@ fn it_maintains_payload_ordering() {
 fn it_works_async() {
     let mut tubes = Tubes::new().add_tube("foo");
 
-    let base_payload = Payload::new(json!({}));
+    let base_payload = Payload::new(());
 
     let mut receivers = vec![];
     let mut children = vec![];
