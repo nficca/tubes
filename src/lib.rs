@@ -3,7 +3,7 @@ mod payload;
 use std::collections::HashMap;
 use std::sync::mpsc;
 
-use self::payload::Payload;
+pub use self::payload::Payload;
 
 pub struct Tubes {
     tubes: HashMap<String, Vec<mpsc::Sender<Payload>>>,
